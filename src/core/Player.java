@@ -50,4 +50,13 @@ public class Player extends Items2D {
     public String getNom() {
         return nom;
     }
+
+    /**
+     * Modifie la position du joueur
+     * @param dX valeur de déplacement horizontal
+     * @param dY valeur de déplacement vertical
+     */
+    public void move(float dX, float dY) {
+        setPosition(getPosX() + dX, getPosY() + dY);
+    }
 }
