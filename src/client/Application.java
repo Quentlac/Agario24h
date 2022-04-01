@@ -12,6 +12,10 @@ public class Application extends PApplet {
     private Map map;
     private Camera camera;
 
+    private Player main_player;
+    private Player player1;
+    private Player player2;
+
     public static void main(String[] args) {
         PApplet.main("client.Application");
     }
@@ -22,13 +26,15 @@ public class Application extends PApplet {
 
         map = new Map();
 
-        Player player1 = new Player("Devistorm", 50, 100, 80);
-        Player player2 = new Player("Cheerland", 120, 200, 45);
+        main_player = new Player("Salut", 100, 400, 50);
+        player1 = new Player("Devistorm", 50, 100, 80);
+        player2 = new Player("Cheerland", 120, 200, 45);
 
         map.addPlayer(player1);
         map.addPlayer(player2);
+        map.addPlayer(main_player);
 
-        camera = new Camera(player1);
+        camera = new Camera(main_player);
 
     }
 
@@ -42,6 +48,10 @@ public class Application extends PApplet {
         background(255); // On efface l'écran
 
         MapUtilitaire.afficheMap(this, camera, map);
+
+        main_player.move(0.5f, 0.2f);
+        player1.move(0.2f, 1);
+
 
     }
 }

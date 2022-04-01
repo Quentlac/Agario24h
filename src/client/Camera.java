@@ -18,7 +18,8 @@ public class Camera extends Items2D {
      * @param target joueur à suivre
      */
     public Camera(Player target) {
-        super(target.getPosX(), target.getPosY());
+        super(0, 0);
+        this.target = target;
     }
 
     public void setTarget(Player target) {
@@ -45,5 +46,15 @@ public class Camera extends Items2D {
     public boolean playerIsInsideCamera(Player player) {
         return Math.abs(player.getPosX() - getPosX()) <= (player.getTaille() + getWidth()) / 2
             && Math.abs(player.getPosY() - getPosY()) <= (player.getTaille() + getHeight()) / 2;
+    }
+
+    @Override
+    public float getPosX() {
+        return target.getPosX();
+    }
+
+    @Override
+    public float getPosY() {
+        return target.getPosY();
     }
 }
