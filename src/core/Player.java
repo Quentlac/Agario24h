@@ -1,50 +1,41 @@
 package core;
 
-/**
- * Classe représentant un joueur, c'est à dire un rond comme dans agario
- */
-public class Player extends Items2D {
+import java.util.ArrayList;
 
-    private float taille; // Rayon du cercle
+public class Player {
+    private final static float DEFAULT_TAILLE = 60;
+
     private String nom;
+    private ArrayList<Cellule> cellules;
+    private Attracteur attracteur;
 
-    /**
-     * Création d'un joueur
-     * @param nom nom du joueur
-     * @param posX position horizontal de départ
-     * @param posY position vertical de départ
-     * @param taille taille du joueur
-     */
-    public Player(String nom, float posX, float posY, float taille) {
-        super(posX, posY);
-        setTaille(taille);
+    private int color;
+
+
+    public Player(String nom, float posX, float posY, int color) {
+        attracteur = new Attracteur(posX, posY);
+        cellules = new ArrayList<>();
+        cellules.add(new Cellule(this, posX - DEFAULT_TAILLE / 2, posY, DEFAULT_TAILLE));
+        cellules.add(new Cellule(this, posX + DEFAULT_TAILLE / 2, posY, DEFAULT_TAILLE));
         this.nom = nom;
     }
 
-    /**
-     * Modifie la taille du joueur (minimum 10)
-     * @param taille taille du joueur (> 10)
-     */
-    public void setTaille(float taille) {
-        if(taille < 10) {
-            this.taille = 10;
+    public void setColor(int color) {
+        if(color > 255) {
+            this.color = 255;
         }
-        else {
-            this.taille = taille;
+        if(color < 0) {
+            this.color = 0;
         }
+        this.color = color;
     }
 
-    /**
-     * Fait grandir le joueur
-     * @param n taille de laquelle grandit le joueur
-     */
-    public void grandit(float n) {
-        if(n > 0)
-            this.taille += n;
+    public int getColor() {
+        return color;
     }
 
-    public float getTaille() {
-        return taille;
+    public ArrayList<Cellule> getCellules() {
+        return cellules;
     }
 
     public String getNom() {
@@ -52,11 +43,50 @@ public class Player extends Items2D {
     }
 
     /**
-     * Modifie la position du joueur
-     * @param dX valeur de déplacement horizontal
-     * @param dY valeur de déplacement vertical
+     * Retourne la taille total d'un joueur
+     * @return
      */
-    public void move(float dX, float dY) {
-        setPosition(getPosX() + dX, getPosY() + dY);
+    public float getTailleTotal() {
+        float total = 0;
+
+        for(Cellule cellule : getCellules()) {
+            total += cellule.getTaille();
+        }
+
+        return total;
+    }
+
+    /**
+     * Retourne le centre de gravité du joueur
+     * @return
+     */
+    public Point getCentre() {
+
+        float moyenneX = 0;
+        float moyenneY = 0;
+
+        for(Cellule cell : getCellules()) {
+            moyenneX += cell.getPosX();
+            moyenneY += cell.getPosY();
+        }
+
+        moyenneX /= getCellules().size();
+        moyenneY /= getCellules().size();
+
+        return new Point(moyenneX, moyenneY);
+
+    }
+
+    /**
+     * Vérifie si le jour est encore vivant
+     * @return Vrai si il est toujours en vie
+     */
+    public boolean isAlive() {
+        return getTailleTotal() > 0;
+    }
+
+    public void move() {
+
     }
 }
+

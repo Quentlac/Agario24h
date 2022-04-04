@@ -3,34 +3,44 @@ package core;
 /**
  * Représente un objet en 2D avec des coordonnées
  */
-public abstract class Items2D {
+public abstract class Items2D extends Point implements Comparable<Items2D> {
 
-    private float posX;
-    private float posY;
+    private float taille; // Rayon du cercle
 
-    public Items2D(float posX, float posY) {
-        this.posX = posX;
-        this.posY = posY;
+    public Items2D() {
+        this(0, 0, 0);
     }
 
-    public float getPosX() {
-        return posX;
+    public Items2D(float posX, float posY, float taille) {
+        super(posX, posY);
+        setTaille(taille);
     }
 
-    public float getPosY() {
-        return posY;
+
+    /**
+     * Modifie la taille de l'item
+     * @param taille taille
+     */
+    public void setTaille(float taille) {
+        this.taille = taille;
     }
 
-    public void setPosX(float posX) {
-        this.posX = posX;
+    public float getTaille() {
+        return taille;
     }
 
-    public void setPosY(float posY) {
-        this.posY = posY;
+
+    /**
+     * Retourne la distance avec un autre item
+     * @param item
+     * @return
+     */
+    public double getDistance(Items2D item) {
+        return Math.sqrt(Math.pow(getPosX() - item.getPosX(), 2) + Math.pow(getPosY() - item.getPosY(), 2));
     }
 
-    public void setPosition(float posX, float posY) {
-        this.posX = posX;
-        this.posY = posY;
+    @Override
+    public int compareTo(Items2D o) {
+        return (int) (getTaille() - o.getTaille());
     }
 }

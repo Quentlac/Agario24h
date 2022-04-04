@@ -18,7 +18,7 @@ public class Camera extends Items2D {
      * @param target joueur à suivre
      */
     public Camera(Player target) {
-        super(0, 0);
+        super(0, 0, 0);
         this.target = target;
     }
 
@@ -31,30 +31,38 @@ public class Camera extends Items2D {
     }
 
     public float getWidth() {
-        return CAMERA_WIDTH;
+        return CAMERA_WIDTH * (1f / getZoom());
     }
 
     public float getHeight() {
-        return CAMERA_HEIGHT;
+        return CAMERA_HEIGHT * (1f / getZoom());
     }
 
     /**
-     * Vérifie si un joueur est dans le champ de la caméra
-     * @param player joueur sur lequel testé
-     * @return vrai si le joueur est dans le champ de la caméra
+     * Calcul le taux de zoom en fonction de la taille du joueur suivis
+     * @return
      */
-    public boolean playerIsInsideCamera(Player player) {
-        return Math.abs(player.getPosX() - getPosX()) <= (player.getTaille() + getWidth()) / 2
-            && Math.abs(player.getPosY() - getPosY()) <= (player.getTaille() + getHeight()) / 2;
+    public float getZoom() {
+        return (float) Math.max(1 - 0.001f * target.getTailleTotal(), 0.2);
+    }
+
+    /**
+     * Vérifie si un item est dans le champ de la caméra
+     * @param item item sur lequel testé
+     * @return vrai si l'item est dans le champ de la caméra
+     */
+    public boolean itemIsInsideCamera(Items2D item) {
+        return Math.abs(item.getPosX() - getPosX()) <= (item.getTaille() + getWidth()) / 2
+            && Math.abs(item.getPosY() - getPosY()) <= (item.getTaille() + getHeight()) / 2;
     }
 
     @Override
     public float getPosX() {
-        return target.getPosX();
+        return target.getCentre().getPosX();
     }
 
     @Override
     public float getPosY() {
-        return target.getPosY();
+        return target.getCentre().getPosY();
     }
 }

@@ -1,16 +1,21 @@
 package client;
 
+import core.GameEngine;
 import core.Map;
 import core.Player;
-import processing.core.PApplet;
+import processing.core.*;
+
 
 public class Application extends PApplet {
+
+    // Ceci est un test
 
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 700;
 
     private Map map;
     private Camera camera;
+    private GameEngine gameEngine;
 
     private Player main_player;
     private Player player1;
@@ -23,15 +28,13 @@ public class Application extends PApplet {
     @Override
     public void setup() {
         background(255);
+        frameRate(60);
 
         map = new Map();
+        gameEngine = new GameEngine(map);
 
         main_player = new Player("Salut", 100, 400, 50);
-        player1 = new Player("Devistorm", 50, 100, 80);
-        player2 = new Player("Cheerland", 120, 200, 45);
 
-        map.addPlayer(player1);
-        map.addPlayer(player2);
         map.addPlayer(main_player);
 
         camera = new Camera(main_player);
@@ -49,9 +52,15 @@ public class Application extends PApplet {
 
         MapUtilitaire.afficheMap(this, camera, map);
 
-        main_player.move(0.5f, 0.2f);
-        player1.move(0.2f, 1);
+        float dX = 0;
+        float dY = 0;
+
+        dX = map(mouseX, 0, WIDTH, -5, 5);
+        dY = map(mouseY, 0, HEIGHT, -5, 5);
+
+        gameEngine.run();
 
 
     }
+
 }
